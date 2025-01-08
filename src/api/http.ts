@@ -1,4 +1,6 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import { ElMessage } from "element-plus";
+import { el } from "element-plus/es/locale";
 
 // 声明模型参数
 type TAxiosOption = {
@@ -36,12 +38,23 @@ class Http {
                     case 200:
                         return response.data;
                     case 500:
-                        // 这里面可以写错误提示，反馈给前端
-                        return response.data;
+                        ElMessage({
+                            message: response.data.msg,
+                            type: "error",
+                        });
+                        break;
                     case 99991:
-                            return response.data;
+                        ElMessage({
+                            message: response.data.msg,
+                            type: "warning",
+                        });
+                        break;
                     case 99992:
-                        return response.data;
+                        ElMessage({
+                            message: response.data.msg,
+                            type: "info",
+                        });
+                        break;
                     case 99998:
                         return response.data;
                     default:

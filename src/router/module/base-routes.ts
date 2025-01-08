@@ -1,7 +1,8 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import Panel from '../../views/panel/panel-index.vue';
+
 import Login from '../../views/login/login-index.vue';
-import Framework from '../../views/framework/framework-index.vue';
+import Framework from '../../views/framework/HelloWorld.vue';
 
 export const routes: RouteRecordRaw[] = [];
 
@@ -31,7 +32,7 @@ routes.push(
       {
         path: '/menu',
         name: '菜单',
-        component: () => import('../../views/menu/menu-index.vue'),
+        component: () => import('@/views/menu/menu-index.vue'),
         meta: { title: '菜单', requireAuth: true, affix: true, closable: false },
       }
     ]
@@ -44,7 +45,7 @@ routes.push(
       {
         path: '/user',
         name: '用户',
-        component: () => import('../../views/user/user-index.vue'),
+        component: () => import('@/views/user/user-index.vue'),
         meta: { title: '用户' },
       }]
   },

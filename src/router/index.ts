@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, NavigationGuardNext, RouteLocationN
 import { routes } from "./module/base-routes";
 import  NProgress  from "nprogress";
 import "nprogress/nprogress.css";
+import { useUserStore } from "@/store/user";
 
 NProgress.configure({ showSpinner: false });
 
@@ -17,10 +18,18 @@ const router = createRouter({
  */
 router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     NProgress.start();
+    const userStore = useUserStore();
+    const endTime = new Date(userStore.expiresDate);
+    const nowTime = new Date();
+    to.path = from.path;
+    if (to.meta.requiresAuth && nowTime > endTime) {
+        router.push('/login');
+    } 
+
     if (to.meta.requiresAuth) {
         next();
     } else if (to.matched.length == 0) {
-        next({ path: "/panel" });
+        next({ path: "/login" });
     } else {
         next();
     }

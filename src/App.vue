@@ -4,12 +4,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "./views/framework/HelloWorld.vue"
+//import HelloWorld from "./views/framework/HelloWorld.vue"
 
 export default defineComponent({
   setup() {
   },
-  components: {HelloWorld},
+ // components: {HelloWorld},
 });
 </script>
 

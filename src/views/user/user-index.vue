@@ -1,6 +1,6 @@
 <template>
     <div>用户</div>
-  </template>
+</template>
   
   <script lang="ts">
   import { defineComponent, onMounted } from "vue";

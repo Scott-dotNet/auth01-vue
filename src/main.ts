@@ -6,12 +6,15 @@ import * as Icons from '@element-plus/icons-vue'
 // import router from './router/module/base-routes'
 import  { createPinia } from 'pinia'
 import router from './router'
+import persist from 'pinia-plugin-persist'
 
 const app = createApp(App)
 // 注册element-plus
 app.use(ElementPlus)
 // 注册pinia
 const pinia = createPinia()
+pinia.use(persist)
+
 app.use(pinia)
 app.use(router)
 // 注册element-plus的图标

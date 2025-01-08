@@ -1,82 +1,24 @@
 import { defineStore } from 'pinia'
-import { routes } from '../router/module/base-routes'
-import { RouteRecordRaw, createWebHashHistory, Router } from 'vue-router';
-import BaseLayout from '../../layouts/BaseLayout.vue';
-import router from '../router/index';
-import { ref } from 'vue';
-const defineRouteComponents: Record<string, any> = {
-  BaseLayout: () => import('@/layouts/BaseLayout.vue')
-};
-const defineRouteComponentKeys = Object.keys(defineRouteComponents);
-export const generator = (
-  routeMap: any[],
-  parentId: string | number,
-  routeItem?: any | [],
-) => {
-  return routeMap
-    //.filter(item => item.menuKey === parentId)
-    .map(item => {
-      const pathArray = item.component.split('/');
-      const url = ref<any>();
-      if (pathArray.length > 0) {
-        if (pathArray.length === 3)
-          url.value = import(`../${pathArray[1]}/${pathArray[2]}.vue`);
-        if (pathArray.length === 4)
-          url.value = import(`../${pathArray[1]}/${pathArray[2]}/${pathArray[3]}.vue`);
-        if (pathArray.length === 5)
-          url.value = import(`../${pathArray[1]}/${pathArray[2]}/${pathArray[3]}/${pathArray[4]}.vue`);
-      };
-      const { title, requireAuth, menuKey } = item || {};
-      const currentRouter: RouteRecordRaw = {
-        // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
-        path: item.path,
-        // 路由名称，建议唯一
-        //name: `${item.id}`,
-        // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
-        meta: {
-          title,
-          requireAuth,
-          menuKey
-        },
-        name: item.name,
-        children: [],
-        // 该路由对应页面的 组件 (动态加载 @/views/ 下面的路径文件)
-        component: item.component && defineRouteComponentKeys.includes(item.component)
-          ? defineRouteComponents[item.component]
-          : () => url.value,
 
-      };
+export const useUserStore = defineStore(
+  'user', {
+  state: () => ({
+    token: '',
+    expiresDate: '',
+    userInfo: {},
+  }),
 
-      // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
-      if (!currentRouter.path.startsWith('http')) {
-        currentRouter.path = currentRouter.path.replace('//', '/');
+  actions: {},
+  //persist:true
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        // 可以是localStorage或sessionStorage
+        storage: localStorage,
+        // 指定需要持久化的属性
+        paths: ['token','expiresDate','userInfo']
       }
-
-      // 重定向
-      item.redirect && (currentRouter.redirect = item.redirect);
-      if (item.children != null) {
-        // 子菜单，递归处理
-        currentRouter.children = generator(item.children, item.menuKey, currentRouter);
-      }
-      if (currentRouter.children === undefined || currentRouter.children.length <= 0) {
-        currentRouter.children;
-      }
-      return currentRouter;
-    })
-    .filter(item => item);
-};
-
-export const useUserStore = defineStore({
-  id: 'user',
-  state: () => {
-    return {
-      token: '',
-      expiresDate: '',
-      roleIds: '',
-      userInfo: {},
-      permissions: [],
-      menus: [],
-    }
+    ]
   },
-  actions: {}
 })

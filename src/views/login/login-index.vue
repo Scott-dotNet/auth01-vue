@@ -3,7 +3,7 @@
       <div class="loginStyle">
         <div style="color: rgb(76 104 139)">
           <div class="systemTitle">
-            OverallAuth 权限管理系统
+            OverallAuth 管理系统
           </div>
           <div class="systemSubTitle">
             简单、易懂、功能强大，欢迎访问使用。
@@ -88,7 +88,7 @@
   import { login } from "@/api/user";
   import { LoginInput } from "@/model/user/LoginInput";
   import { useUserStore } from "@/store/user";
-  import { storeToRefs } from "pinia";
+  //import { storeToRefs } from "pinia";
   export default defineComponent({
     setup() {
       //初始加载
@@ -113,7 +113,7 @@
         Password: "1",
       });
       const loginClick = function () {
-        login(loginForm).then(({ data, code, msg }) => {
+        login(loginForm).then(({ data, code }) => {
           setTimeout(() => {
             if (code == 200) {
               userStore.token = data[0].token.toString();
@@ -148,6 +148,7 @@
     },
     components: {},
   });
+
   </script>
   
   <style scoped>
@@ -160,17 +161,17 @@
   }
   
   .loginStyle {
-    width: 23%;
-    height: 55%;
-    margin-top: 12%;
-    margin-left: 10%;
+    width: 32%;
+    height: 75%;
+    margin-top: 8%;
+    margin-left: 20%;
     border: 2px solid white;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0px 0px 19px 0px rgba(132, 203, 255, 2.5);
   }
   .systemTitle {
-    height: 70px;
+    height: 80px;
     font-size: 30px;
     justify-content: center;
     align-items: center;
